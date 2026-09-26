@@ -1,31 +1,73 @@
 {% extends 'clubs/layout.html' %}
 
-{% block title %}{{club.name}}{% endblock %}
+{% block title %}{{ club.name }}{% endblock %}
 
 {% block body %}
     <h1>{{ club.name }}</h1>
-    <p>{{ club.description }}</p>
-    <p>Category : {{ club.get_category_display }}</p>
+    <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+
+    <p class="mt-3">{{ club.description }}</p>
+
+    <div class="mb-3">
+        {% if user.is_authenticated %}
+            {% if is_member %}
+                <form method="post" action="{% url 'leave_club' club.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger btn-sm" type="submit">Leave club</button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'join_club' club.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary btn-sm" type="submit">Join club</button>
+                </form>
+            {% endif %}
+        {% endif %}
+
+        {% if user == club.creator and pick %}
+            <form method="post" action="{% url 'close_pick' club.id %}" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-warning btn-sm" type="submit">Close current pick</button>
+            </form>
+        {% endif %}
+
+        <a href="{% url 'nominations_list' club.id %}" class="btn btn-outline-secondary btn-sm">
+            See nominations
+        </a>
+    </div>
 
     {% if pick %}
-        <h2>Current pick: {{ pick.title }}</h2>
-        <p>by {{ pick.creator }}</p>
+        <div class="card mt-4 mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Current pick: {{ pick.title }}</h2>
+                <p class="card-text">by {{ pick.creator }}</p>
+            </div>
+        </div>
 
         <h3>Comments</h3>
         {% for comment in comments %}
-            <div>
-                <strong>{{ comment.author.username }}</strong>
-                <small>{{ comment.published_date }}</small>
-                <p>{{ comment.text }}</p>
+            <div class="card mb-2">
+                <div class="card-body">
+                    <strong>{{ comment.author.username }}</strong>
+                    <small class="text-muted">{{ comment.published_date }}</small>
+                    <p class="card-text mt-2">{{ comment.text }}</p>
+                </div>
             </div>
         {% empty %}
             <p>No comments yet.</p>
         {% endfor %}
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'create_comment' pick.id %}" class="mt-3">
+                {% csrf_token %}
+                <textarea name="text" class="form-control mb-2" placeholder="Write a comment..."></textarea>
+                <button class="btn btn-primary btn-sm" type="submit">Post comment</button>
+            </form>
+        {% endif %}
     {% else %}
         <p>No active pick.</p>
     {% endif %}
 
-    <h3>Members</h3>
+    <h3 class="mt-4">Members</h3>
     <ul>
         {% for member in members %}
             <li>{{ member.username }}</li>
