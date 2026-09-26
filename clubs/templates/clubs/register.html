@@ -1,0 +1,17 @@
+{% extends 'clubs/layout.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1>Register</h1>
+
+    <form method="post" style="min-width: 400px;">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+    <p class="mt-3">
+        Already have an account? <a href="{% url 'login' %}">Log In</a>
+    </p>
+{% endblock %}
