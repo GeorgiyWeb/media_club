@@ -1,0 +1,34 @@
+{% extends 'clubs/layout.html' %}
+
+{% block title %}{{club.name}}{% endblock %}
+
+{% block body %}
+    <h1>{{ club.name }}</h1>
+    <p>{{ club.description }}</p>
+    <p>Category : {{ club.get_category_display }}</p>
+
+    {% if pick %}
+        <h2>Current pick: {{ pick.title }}</h2>
+        <p>by {{ pick.creator }}</p>
+
+        <h3>Comments</h3>
+        {% for comment in comments %}
+            <div>
+                <strong>{{ comment.author.username }}</strong>
+                <small>{{ comment.published_date }}</small>
+                <p>{{ comment.text }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    {% else %}
+        <p>No active pick.</p>
+    {% endif %}
+
+    <h3>Members</h3>
+    <ul>
+        {% for member in members %}
+            <li>{{ member.username }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

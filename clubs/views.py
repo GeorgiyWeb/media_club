@@ -79,7 +79,62 @@ def club_create(request):
 
     return render(request, "clubs/club_create.html", {"form": form})
             
+
+def vote(request):
+    pass
+
+def create_comment(request):
+    pass
+
+def club_detail(request, id):
+    club = get_object_or_404(Club, id=id)
+    pick = club.picks.filter(is_active=True).first()
+    comments = pick.comments.all() if pick else []
     
+    is_member = False
+    if request.user.is_authenticated:
+        is_member = Membership.objects.filter(user=request.user, club=club).exists()
+    
+    members = club.members.all()
+    
+    return render(request, "clubs/club_detail.html", {
+        "club": club,
+        "pick": pick,
+        "comments": comments,
+        "is_member": is_member,
+        "members": members,
+    })
+    
+    
+@login_required
+def join_club(request, id):
+    club = get_object_or_404(Club, id=id)
+    
+    if request.method == "POST":
+        if not Membership.objects.filter(user=request.user, club=club).exists():
+            Membership.objects.create(user=request.user, club=club)
+    
+    return redirect("club_detail", id=club.id)
+
+
+@login_required
+def leave_club(request, id):
+    club = get_object_or_404(Club, id=id)
+    
+    if request.method == "POST":
+        Membership.objects.filter(user=request.user, club=club).delete()
+    
+    return redirect("club_detail", id=club.id)
+            
+
+def nominations(request):
+    pass
+
+def create_nomination(request):
+    pass
+    
+def close_pick(request):
+    pass
     
     
     
