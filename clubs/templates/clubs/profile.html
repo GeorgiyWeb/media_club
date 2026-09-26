@@ -1,0 +1,32 @@
+{% extends 'clubs/layout.html' %}
+
+{% block title %}{{ profile_user.username }}{% endblock %}
+
+{% block body %}
+    <h1>{{ profile_user.username }}</h1>
+    <p class="text-muted">Nominations suggested: {{ nominations }}</p>
+
+    <h3 class="mt-4">Member of</h3>
+    {% for club in clubs %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <a href="{% url 'club_detail' club.id %}">{{ club.name }}</a>
+                <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+            </div>
+        </div>
+    {% empty %}
+        <p>Not a member of any club yet.</p>
+    {% endfor %}
+
+    <h3 class="mt-4">Created clubs</h3>
+    {% for club in created_clubs %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <a href="{% url 'club_detail' club.id %}">{{ club.name }}</a>
+                <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+            </div>
+        </div>
+    {% empty %}
+        <p>No clubs created yet.</p>
+    {% endfor %}
+{% endblock %}
