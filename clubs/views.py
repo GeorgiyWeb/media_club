@@ -166,20 +166,20 @@ def nominations(request, id):
 
 
 @login_required
-def create_nomination(request, club_id):
-    club = get_object_or_404(Club, id=club_id)
+def create_nomination(request, id):
+    club = get_object_or_404(Club, id=id)
     
     if request.method == "POST":
         title = request.POST.get("title")
         creator = request.POST.get("creator")
         
-    if title and creator:
-        Nomination.objects.create(club=club,
-                                  author=request.user,
-                                  title=title,
-                                  creator=creator)
+        if title and creator:
+            Nomination.objects.create(club=club,
+                                      author=request.user,
+                                      title=title,
+                                      creator=creator)
     
-    return redirect("nomination_list", id=club.id)
+    return redirect("nominations_list", id=club.id)
     
     
 @login_required
