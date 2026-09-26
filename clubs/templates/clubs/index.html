@@ -1,0 +1,33 @@
+{% extends 'clubs/layout.html' %}
+
+{% block title %}Media Club{% endblock %}
+
+{% block body %}
+    <h1>Clubs</h1>
+
+    <div>
+        <a href="{% url 'index' %}">All</a>
+        <a href="{% url 'index' %}?category=books">Books</a>
+        <a href="{% url 'index' %}?category=movies">Movies</a>
+        <a href="{% url 'index' %}?category=music">Music</a>
+        <a href="{% url 'index' %}?category=games">Games</a>
+    </div>
+
+    <div class="row">
+        {% for club in clubs %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'club_detail' club.id %}">{{ club.name }}</a>
+                        </h5>
+                        <p class="card-text">{{ club.description }}</p>
+                        <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No clubs yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
