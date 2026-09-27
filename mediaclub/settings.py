@@ -55,7 +55,7 @@ ROOT_URLCONF = 'mediaclub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/"templates"],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,3 +120,5 @@ STATIC_URL = 'static/'
 
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "index"
+
+LOGOUT_REDIRECT_URL = "index"
