@@ -4,9 +4,14 @@
 
 {% block body %}
     <h1>Create Club</h1>
-    <form method="post">
+
+    <form method="post" style="max-width: 500px;">
         {% csrf_token %}
         {{form.as_p}}
-        <button type="submit">Create</button>
+
+        <button class="btn btn-primary" type="submit">Create Club</button>
     </form>
+
+    <a href="{% url 'index' %}" class="btn btn-outline-secondary btn-sm mt-3">← Back to clubs</a>
+
 {% endblock %}

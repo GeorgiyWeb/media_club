@@ -7,7 +7,7 @@
 
     <p>Please, use the following form to log in:</p>
 
-    <form method="post" style="min-width: 400px;">
+    <form method="post" style="max-width: 400px;">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-primary" type="submit">Log In</button>
