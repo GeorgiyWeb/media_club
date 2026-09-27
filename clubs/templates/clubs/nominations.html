@@ -1,4 +1,5 @@
 {% extends 'clubs/layout.html' %}
+{% load static %}
 
 {% block title %}Nominations — {{ club.name }}{% endblock %}
 
@@ -51,6 +52,6 @@
         <p>No nominations yet. Be the first to suggest one!</p>
     {% endfor %}
 
-    {% load static %}
+
     <script src="{% static 'vote.js' %}"></script>
 {% endblock %}

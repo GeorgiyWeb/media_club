@@ -8,24 +8,28 @@
 
     <h3 class="mt-4">Member of</h3>
     {% for club in clubs %}
-        <div class="card mb-2">
-            <div class="card-body">
-                <a href="{% url 'club_detail' club.id %}">{{ club.name }}</a>
-                <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+        <a href="{% url 'club_detail' club.id %}" class="text-decoration-none text-dark">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <strong>{{ club.name }}</strong>
+                    <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+                </div>
             </div>
-        </div>
+        </a>
     {% empty %}
         <p>Not a member of any club yet.</p>
     {% endfor %}
 
     <h3 class="mt-4">Created clubs</h3>
     {% for club in created_clubs %}
-        <div class="card mb-2">
-            <div class="card-body">
-                <a href="{% url 'club_detail' club.id %}">{{ club.name }}</a>
-                <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+        <a href="{% url 'club_detail' club.id %}" class="text-decoration-none text-dark">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <strong>{{ club.name }}</strong>
+                    <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+                </div>
             </div>
-        </div>
+        </a>
     {% empty %}
         <p>No clubs created yet.</p>
     {% endfor %}

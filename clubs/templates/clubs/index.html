@@ -6,25 +6,25 @@
     <h1>Clubs</h1>
 
     <div>
-        <a href="{% url 'index' %}">All</a>
-        <a href="{% url 'index' %}?category=books">Books</a>
-        <a href="{% url 'index' %}?category=movies">Movies</a>
-        <a href="{% url 'index' %}?category=music">Music</a>
-        <a href="{% url 'index' %}?category=games">Games</a>
+        <a href="{% url 'index' %}" class="btn btn-sm btn-outline-secondary">All</a>
+        <a href="{% url 'index' %}?category=books" class="btn btn-sm btn-outline-secondary">Books</a>
+        <a href="{% url 'index' %}?category=movies" class="btn btn-sm btn-outline-secondary">Movies</a>
+        <a href="{% url 'index' %}?category=music" class="btn btn-sm btn-outline-secondary">Music</a>
+        <a href="{% url 'index' %}?category=games" class="btn btn-sm btn-outline-secondary">Games</a>
     </div>
-
+ 
     <div class="row">
         {% for club in clubs %}
             <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="{% url 'club_detail' club.id %}">{{ club.name }}</a>
-                        </h5>
-                        <p class="card-text">{{ club.description }}</p>
-                        <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+                <a href="{% url 'club_detail' club.id %}" class="text-decoration-none text-dark">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ club.name }}</h5>
+                            <p class="card-text">{{ club.description }}</p>
+                            <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         {% empty %}
             <p>No clubs yet.</p>

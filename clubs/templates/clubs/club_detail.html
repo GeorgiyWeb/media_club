@@ -39,7 +39,7 @@
         <div class="card mt-4 mb-4">
             <div class="card-body">
                 <h2 class="card-title">Current pick: {{ pick.title }}</h2>
-                <p class="card-text">by {{ pick.creator }}</p>
+                <p class="card-text">by {{ pick.creator }} — suggested by {{ pick.author.username }}</p>
             </div>
         </div>
 
@@ -70,7 +70,11 @@
     <h3 class="mt-4">Members</h3>
     <ul>
         {% for member in members %}
-            <li>{{ member.username }}</li>
+            <li><a href="{% url 'profile' member.username %}">{{ member.username }}</a></li>
         {% endfor %}
     </ul>
+
+    <button class="btn btn-warning btn-sm" type="submit">
+        Close current pick
+    </button>
 {% endblock %}
