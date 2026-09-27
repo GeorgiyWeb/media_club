@@ -19,6 +19,10 @@ class Club(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_clubs')
     members = models.ManyToManyField(User, through='Membership')
     
+    def __str__(self):
+        return self.name
+    
+    
 class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='memberships')
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='memberships')
@@ -26,6 +30,10 @@ class Membership(models.Model):
     
     class Meta:
         unique_together = ('user', 'club')
+        
+    def __str__(self):
+        return f"{self.user.username} in {self.club.name}"
+    
     
 class Pick(models.Model):
     title = models.CharField(max_length=100)
@@ -35,28 +43,42 @@ class Pick(models.Model):
     is_active = models.BooleanField(default=True)
     begin_date = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return self.title
+    
+    
 class Comment(models.Model):
     text = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='authored_comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authored_comments')
     pick = models.ForeignKey(Pick, on_delete=models.CASCADE, related_name='comments')
     published_date = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         ordering = ['-published_date']
         
+    def __str__(self):
+        return f"{self.author.username}: {self.text}"
+        
 
 class Nomination(models.Model):
     title = models.CharField(max_length=255)
     creator = models.CharField(max_length=255)
-    club = models.ForeignKey(Club, on_delete=models.PROTECT, related_name='nominations')
-    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='authored_nominations')
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='nominations')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authored_nominations')
     date = models.DateTimeField(auto_now_add=True)
+    
+    
+    def __str__(self):
+        return self.title
     
     
 class Vote(models.Model):
     nomination = models.ForeignKey(Nomination, on_delete=models.CASCADE, related_name='votes')
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='votes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='votes')
     date = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         unique_together = ('nomination', 'user')
+        
+    def __str__(self):
+        return f"{self.user.username} - {self.nomination.title}"
