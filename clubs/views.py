@@ -21,7 +21,7 @@ def index(request):
         clubs = Club.objects.all()
         
     
-    return render(request, "clubs/index.html", {'clubs' : clubs})
+    return render(request, "clubs/index.html", {'clubs': clubs})
 
 
 def profile(request, username):
@@ -30,10 +30,10 @@ def profile(request, username):
     created_clubs = user.created_clubs.all()
     nominations = user.authored_nominations.count()
     
-    return render(request, "clubs/profile.html", {'profile_user' : user,
-                                'clubs' : clubs,
-                                'created_clubs' : created_clubs,
-                                'nominations' : nominations})
+    return render(request, "clubs/profile.html", {'profile_user': user,
+                                'clubs': clubs,
+                                'created_clubs': created_clubs,
+                                'nominations': nominations})
 
 
 def register(request):
@@ -47,7 +47,7 @@ def register(request):
     else:   
         form = UserCreationForm()
         
-    return render(request, "clubs/register.html", {'form' : form})
+    return render(request, "clubs/register.html", {'form': form})
 
 
 @login_required
@@ -94,7 +94,7 @@ def vote(request, nomination_id):
             Vote.objects.create(nomination=nomination, user=request.user)
             voted = True
             
-        return JsonResponse({"votes" : nomination.votes.count(), "voted" : voted,})
+        return JsonResponse({"votes" : nomination.votes.count(), "voted": voted,})
     
     return JsonResponse({"error" : "POST required"}, status=400)
         
@@ -117,6 +117,7 @@ def club_detail(request, id):
     comments = pick.comments.all() if pick else []
     
     is_member = False
+    
     if request.user.is_authenticated:
         is_member = Membership.objects.filter(user=request.user, club=club).exists()
     
@@ -160,9 +161,9 @@ def nominations(request, id):
     if request.user.is_authenticated:
         is_member = Membership.objects.filter(user=request.user, club=club).exists()
         
-    return render(request, "clubs/nominations.html", {'club' : club,
-                                                      'nomination_list' : nomination_list,
-                                                      "is_member" : is_member})
+    return render(request, "clubs/nominations.html", {'club': club,
+                                                      'nomination_list': nomination_list,
+                                                      "is_member": is_member})
 
 
 @login_required
