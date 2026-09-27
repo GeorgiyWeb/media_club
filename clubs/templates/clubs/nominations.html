@@ -1,2 +1,56 @@
-{% load static %}
-<script src="{% static 'vote.js' %}"></script>
+{% extends 'clubs/layout.html' %}
+
+{% block title %}Nominations — {{ club.name }}{% endblock %}
+
+{% block body %}
+    <a href="{% url 'club_detail' club.id %}" class="btn btn-outline-secondary btn-sm mb-3">← Back to club</a>
+
+    <h1>Nominations for {{ club.name }}</h1>
+
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'create_nomination' club.id %}" class="mb-4">
+            {% csrf_token %}
+            <div class="row g-2">
+                <div class="col-md-5">
+                    <input type="text" name="title" class="form-control" placeholder="Title" required>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="creator" class="form-control" placeholder="Author / Creator" required>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100" type="submit">Suggest</button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+
+    
+    <h3>All nominations</h3>
+
+    {% for nomination in nomination_list %}
+        <div class="card mb-2 nomination">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">{{ nomination.title }}</h5>
+                    <small class="text-muted">
+                        by {{ nomination.creator }} — suggested by {{ nomination.author.username }}
+                    </small>
+                </div>
+                <div class="text-end">
+
+                    {% if user.is_authenticated %}
+                        <button class="btn btn-sm btn-outline-primary vote-btn"
+                                data-nomination-id="{{ nomination.id }}">Vote</button>
+                    {% endif %}
+
+                    <span class="badge bg-primary vote-count">{{ nomination.votes.count }}</span>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No nominations yet. Be the first to suggest one!</p>
+    {% endfor %}
+
+    {% load static %}
+    <script src="{% static 'vote.js' %}"></script>
+{% endblock %}
