@@ -161,9 +161,16 @@ def nominations(request, id):
     if request.user.is_authenticated:
         is_member = Membership.objects.filter(user=request.user, club=club).exists()
         
+    voted_ids = []
+    if request.user.is_authenticated:
+        voted_ids = list(Vote.objects.filter(
+            user=request.user, nomination__club=club
+        ).values_list('nomination_id', flat=True))
+        
     return render(request, "clubs/nominations.html", {'club': club,
                                                       'nomination_list': nomination_list,
-                                                      "is_member": is_member})
+                                                      "is_member": is_member,
+                                                      "voted_ids" : voted_ids,})
 
 
 @login_required

@@ -40,8 +40,8 @@
                 <div class="text-end">
 
                     {% if user.is_authenticated %}
-                        <button class="btn btn-sm btn-outline-primary vote-btn"
-                                data-nomination-id="{{ nomination.id }}">Vote</button>
+                        <button class="btn btn-sm vote-btn {% if nomination.id in voted_ids %}btn-primary{% else %}btn-outline-primary{% endif %}"
+                            data-nomination-id="{{ nomination.id }}">Vote</button>
                     {% endif %}
 
                     <span class="badge bg-primary vote-count">{{ nomination.votes.count }}</span>
